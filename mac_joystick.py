@@ -25,13 +25,16 @@ JoyAx = pygame.joystick.Joystick(0).get_numaxes()
 print("Number of axis:")
 print(JoyAx)
 
-# doggo = serial.Serial('/dev/tty.usbserial-DN042CH3', 115200)
+doggo = serial.Serial('/dev/tty.usbserial-DN042CH3', 115200)
 
 def deadband(x, deadband):
     if math.fabs(x) < deadband:
         return 0
     else:
         return x
+
+def doggo_send(x):
+	doggo.write(bytes(x+'\n',"utf-8"))
 
 while True:
     pygame.event.pump()
@@ -54,18 +57,21 @@ while True:
     # for i in range(12):
     #     print(i, pygame.joystick.Joystick(0).get_button(i))
 
-    print("fwd", forward, "turn", right, 
-                "x",x_button, "y",y_button, 
-                "a",a_button, "b",b_button)
+    # print("fwd", forward, "turn", right, 
+    #             "x",x_button, "y",y_button, 
+    #             "a",a_button, "b",b_button)
 
-    if forward == 0 and right == 0:
-        pass
-        # doggo.write("S\n")
-    elif right == 0:
-        pass
-    elif forward == 0:
-        pass
+    if forward == 0 and right == 0 and a_button == 0:
+        print('S')
+        doggo_send('S')
+    elif forward != 0:
+        print('T;l%.3f' % (forward*0.15))
+        doggo_send('T;l%.3f' % (forward*0.15))
+    elif a_button == 1:
+        print('H')
+        doggo_send('H')
     else:
-        pass
+        print('S')
+        doggo_send('S')
 
     pygame.time.wait(100)
