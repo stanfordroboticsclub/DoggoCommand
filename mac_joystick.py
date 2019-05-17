@@ -64,9 +64,9 @@ while True:
     if forward == 0 and right == 0 and a_button == 0:
         print('S')
         doggo_send('S')
-    elif forward != 0:
-        print('T;l%.3f' % (forward*0.15))
-        doggo_send('T;l%.3f' % (forward*0.15))
+    elif forward != 0 or right != 0:
+        print('Y;l%.3f;s%.3f' % ((forward*0.15), (right*0.08)))
+        doggo_send('Y;l%.3f;s%.3f' % ((forward*0.15), (right*0.08)))
     elif a_button == 1:
         print('H')
         doggo_send('H')
