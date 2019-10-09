@@ -61,7 +61,7 @@ while True:
     #             "x",x_button, "y",y_button, 
     #             "a",a_button, "b",b_button)
 
-    if forward == 0 and right == 0 and a_button == 0:
+    if forward == 0 and right == 0 and a_button == 0 and b_button == 0:
         print('S')
         doggo_send('S')
     elif forward != 0 or right != 0:
@@ -70,6 +70,9 @@ while True:
     elif a_button == 1:
         print('H')
         doggo_send('H')
+    elif b_button == 1:
+        print('E')
+        doggo_send('E')
     else:
         print('S')
         doggo_send('S')
