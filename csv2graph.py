@@ -1,3 +1,5 @@
+#ONLY PYTHON 2 NERDS
+
 import numpy as np
 import math
 import random
@@ -40,11 +42,11 @@ def easyPlot(data, nameData, indexs):
 	plt.legend()
 
 def main():
-	print ".CSV is assumed to have the names in the top row"
+	print(".CSV is assumed to have the names in the top row")
 	inputData = loadCsvData(raw_input("Enter a .CSV file to open: "))
 	fixedData, nameData = translateDataShape(inputData)
 
-	print "Common Presents: EstTheta = (1, 5, 9, 13), EstGamma = (3, 7, 11, 15)"
+	print ("Common Presents: EstTheta = (1, 5, 9, 13), EstGamma = (3, 7, 11, 15)")
 	easyPlot(fixedData, nameData, input("Please enter a tuple of the indexes to show: "))
 	plt.show()
 
