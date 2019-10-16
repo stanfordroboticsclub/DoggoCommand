@@ -16,21 +16,29 @@ import time
 import serial
 import datetime as dt
 
-NUM_DATAPOINTS = 20
 
-def animate(i, ser, data, timeArray, commas, ax, outputChannels):
+NUM_DATAPOINTS = 100
+outputChannels = (15,)
+
+def animate(i, ser, data, timeArray, ax, outputChannels):
 	line = ser.readline().decode("utf-8").strip()
-	currentLine = line.split(", ")
-	for i in range (0, commas):
-		data[i].append(currentLine[i])
+	currentLine = line.split("\t")
+	print(currentLine)
+	for i in range(0, len(data)):
+		data[i].append(float(currentLine[i]))
 
 	timeArray.append(dt.datetime.now().strftime('%H:%M:%S.%f'))
 	ax.clear()
 
-	for i in range(0, commas):
+	for i in outputChannels:
 		ax.plot(timeArray[-NUM_DATAPOINTS:], data[i][-NUM_DATAPOINTS:])
 
-
+	plt.tick_params(
+		axis='x',          # changes apply to the x-axis
+		which='both',      # both major and minor ticks are affected
+		bottom=False,      # ticks along the bottom edge are off
+ 		top=False,         # ticks along the top edge are off
+		labelbottom=False)
 	plt.xticks(rotation=45, ha='right')
 	plt.subplots_adjust(bottom=0.30)
 	plt.title('Data over Time')
@@ -42,29 +50,23 @@ def animate(i, ser, data, timeArray, commas, ax, outputChannels):
 
 def main():
 	data = []
-	commas = 1
 
 	fig = plt.figure()
 	ax = fig.add_subplot(1, 1, 1)
 	timeArray = []
 
-	outputChannels = input("Type a Tuple for which indexs to graph: ")
 	csvFileName = input("CSV output file name (ending in .csv): ")
 
 
 	#nano is 9600, teensy is 115200
-	with serial.Serial('/dev/cu.usbserial-AE01ISIZ', 9600, timeout=1) as ser:
+	with serial.Serial('/dev/cu.usbserial-DN042CH3', 115200, timeout=1) as ser:
 		time.sleep(.5)
 
 		line = ser.readline().decode("utf-8").strip()
-		for char in line:
-			if char == ",":
-				commas += 1
-				data.append([])
+		for element in line.split("\t"):
+			data.append([])
 		#last entry doesn't have a comma
-		data.append([])
-
-		ani = animation.FuncAnimation(fig, animate, fargs=(ser, data, timeArray, commas, ax, outputChannels), interval=1)
+		ani = animation.FuncAnimation(fig, animate, fargs=(ser, data, timeArray, ax, outputChannels), interval=1)
 		plt.show()
 
 	with open(csvFileName, 'w') as csvFile:
