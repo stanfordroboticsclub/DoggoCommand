@@ -18,8 +18,5 @@ in python 2
 Similar to csv2graph.py, this is meant for realtime data visualization
 Plug in the zigbee module and watch whatever data you want to graph
 
-UNTESTED
-
-Input a tuple of the indexes of the data you want to see graph along with a name for the output CSV
-
-If the graph window truncates too much data, change the constant at the top of the file (NUM_DATAPOINTS). The default is the last 20 datapoints
+Please review the constants at the top of the file for the right configuration
+Will automatically save data as a csv
